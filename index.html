@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="google-site-verification" content="L5_iv8J-b3qgZ88hkCi0SrjpYutiAYzjC0XJM1ZQjeE" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYNC VIBE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff0000;
+            --secondary: #ff5500;
+            --dark-bg: #242323;
+            --light-bg: #181818;
+            --card-bg: #282828;
+            --text-primary: #FFFFFF;
+            --text-secondary: #B3B3B3;
+            --glow: 0 0 20px rgb(189, 0, 0);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', 'Segoe UI', sans-serif;
+        }
+        
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap');
+        
+        body {
+            color: var(--text-primary);
+            background-color: var(--dark-bg);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-bottom: 100px;
+            transition: all 0.5s ease;
+        }
+        
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: rgba(0, 0, 0, 0.9);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid var(--primary);
+        }
+        
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-icon {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+        
+        .infinity {
+            font-size: 1.5rem;
+            margin-left: 5px;
+            color: var(--secondary);
+        }
+        
+        .nav-icons {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .nav-icon {
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .nav-icon:hover {
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .main-nav {
+            display: flex;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.85);
+            padding: 0.8rem;
+            border-bottom: 1px solid #333;
+        }
+        
+        .main-nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            margin: 0 1.2rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+        
+        .main-nav a:hover {
+            color: var(--primary);
+        }
+        
+        .hero {
+            padding: 6rem 2rem;
+            text-align: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), 
+                        url('images/cover.jpg') center/cover no-repeat;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+        
+        .soul-badge {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 1rem;
+            box-shadow: var(--glow);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .music-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .track {
+            background-color: var(--card-bg);
+            padding: 1rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .track:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--glow);
+        }
+        
+        .track-image-container {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            margin-bottom: 1rem;
+        }
+        
+        .track-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+            border: 2px solid var(--primary);
+        }
+        
+        .play-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+            border-radius: 4px;
+        }
+        
+        .track:hover .play-overlay {
+            opacity: 1;
+        }
+        
+        .play-icon {
+            color: rgb(255, 255, 255);
+            font-size: 2rem;
+            background-color: rgba(35, 90, 134, 0.89);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .track h3 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .track p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .track-links {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            justify-content: center;
+        }
+        
+        .youtube-btn, .audiomack-btn {
+            display: inline-block;
+            padding: 0.3rem;
+            border-radius: 50%;
+            text-decoration: none;
+            font-size: 0.9rem;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .youtube-btn {
+            background-color: #ff0000;
+            color: white;
+        }
+        
+        .audiomack-btn {
+            background-color: #474646;
+            color: rgb(255, 174, 23);
+        }
+        
+        .player-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background-color: var(--card-bg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            border-top: 1px solid #282828;
+            z-index: 100;
+        }
+        
+        .now-playing {
+            display: flex;
+            align-items: center;
+            width: 25%;
+        }
+        
+        .now-playing-cover {
+            width: 56px;
+            height: 56px;
+            object-fit: cover;
+            margin-right: 12px;
+            border-radius: 4px;
+        }
+        
+        .song-info .title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .song-info .artist {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+        
+        .player-controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 40%;
+        }
+        
+        .control-buttons {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .control-button {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            margin: 0 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .control-button:hover {
+            color: var(--text-primary);
+        }
+        
+        .play-button-small {
+            background-color: var(--text-primary);
+            color: black;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s;
+        }
+        
+        .play-button-small:hover {
+            transform: scale(1.1);
+        }
+        
+        .progress-container {
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+        
+        .progress-time {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            width: 40px;
+        }
+        
+        .progress-bar {
+            flex-grow: 1;
+            height: 4px;
+            background-color: #535353;
+            border-radius: 2px;
+            margin: 0 10px;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .progress {
+            height: 100%;
+            width: 0%;
+            background-color: var(--primary);
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .progress-dot {
+            position: absolute;
+            right: -5px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: none;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: rgba(0, 0, 0, 0.9);
+            margin-top: 2rem;
+        }
+        
+        .social-links {
+            margin: 1rem 0;
+        }
+        
+        .social-links a {
+            color: white;
+            margin: 0 1rem;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: var(--primary);
+        }
+        
+        .copyright {
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .gallery-item {
+            border: 3px solid #ff0000;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 47, 0, 0.5);
+        }
+
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 3px solid transparent;
+            border-radius: 5px;
+            animation: borderGlow 2s infinite;
+            pointer-events: none;
+        }
+
+        .gallery-item:hover::before {
+            border-color: var(--primary);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        #fullscreen-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #fullscreen-image {
+            max-width: 90%;
+            max-height: 90%;
+            border: 3px solid #ff2f00;
+            box-shadow: 0 0 30px rgba(255, 47, 0, 0.8);
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .close-btn:hover {
+            color: #ff2f00;
+            transform: scale(1.2);
+        }
+        
+        .cruise-btn-container {
+            text-align: center;
+            margin: 25px 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .cruise-btn {
+            background: linear-gradient(135deg, #0066cc, #004080);
+            color: white;
+            border: none;
+            padding: 11.85px 23.7px; /* Reduced by 21% */
+            font-size: 14.22px; /* Reduced by 21% */
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 102, 204, 0.4);
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 7.9px; /* Reduced by 21% */
+        }
+
+        .dashboard-btn {
+            background: linear-gradient(135deg, #ff5500, #cc4400);
+            color: white;
+            border: none;
+            padding: 11.85px 23.7px; /* Reduced by 21% */
+            font-size: 14.22px; /* Reduced by 21% */
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(204, 85, 0, 0.4);
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 7.9px; /* Reduced by 21% */
+        }
+
+        .cruise-vibe-btn {
+            background: linear-gradient(135deg, #ff0000, #cc0000);
+            color: white;
+            border: none;
+            padding: 11.85px 23.7px; /* Reduced by 21% */
+            font-size: 14.22px; /* Reduced by 21% */
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(204, 0, 0, 0.4);
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 7.9px; /* Reduced by 21% */
+            text-decoration: none;
+        }
+
+        .cruise-vibe-btn:active {
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.9);
+        }
+        
+        .cruise-icon {
+            font-size: 18.96px; /* Reduced by 21% */
+        }
+        
+        .cruise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #10141a;
+            z-index: 1000;
+            display: none;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        
+        .close-cruise {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            z-index: 1001;
+            transition: all 0.3s;
+        }
+        
+        .close-cruise:hover {
+            color: #0066cc;
+            transform: scale(1.2);
+        }
+        
+        .cruise-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            color: white;
+        }
+        
+        .current-gig-frame {
+    position: relative;
+    background: rgba(0, 68, 136, 0.493);
+    border-radius: 15px;
+    padding: 20px; /* Reduced from 30px */
+    margin-bottom: 30px; /* Reduced from 50px */
+    text-align: center;
+    overflow: hidden;
+    max-width: 600px; /* Added maximum width */
+    margin-left: auto; /* Center horizontally */
+    margin-right: auto; /* Center horizontally */
+    width: 90%; /* Responsive width */
+}
+        
+        
+        .glowing-border {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 204, 255, 0.5);
+            animation: glow-pulse 3s infinite ease-in-out;
+            pointer-events: none;
+        }
+        
+        .current-gig-frame h2 {
+            color: #00ccff;
+            font-size: 2rem;
+            margin-bottom: 25px;
+            text-shadow: 0 0 10px rgba(0, 204, 255, 0.5);
+        }
+        
+        .current-gig-image-container {
+            margin: 0 auto 25px;
+            max-width: 700px;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .current-gig-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.3s;
+        }
+        
+        .current-gig-image:hover {
+            transform: scale(1.02);
+        }
+        
+        .ticket-btn {
+            background: linear-gradient(135deg, #00ccff, #0066cc);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 204, 255, 0.4);
+        }
+        
+        .ticket-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 204, 255, 0.6);
+            background: linear-gradient(135deg, #00ddff, #0077dd);
+        }
+        
+        .past-gigs-gallery h2 {
+            color: #00ccff;
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .gigs-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .gallery-frame {
+            background: rgba(0, 35, 110, 0.452);
+            border-radius: 10px;
+            padding: 15px;
+            transition: all 0.3s;
+        }
+        
+        .gallery-frame:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 102, 204, 0.3);
+        }
+        
+        .gallery-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            display: block;
+            transition: transform 0.3s;
+        }
+        
+        .gallery-image:hover {
+            transform: scale(1.05);
+        }
+        
+        .fullscreen-viewer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(9, 10, 22, 0.87);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .fullscreen-gig-image {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border: 3px solid #0d3fc798;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 204, 255, 0.5);
+        }
+        
+        .close-fullscreen {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .close-fullscreen:hover {
+            color: #00ccff;
+            transform: scale(1.2);
+        }
+        
+        @keyframes glow-pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 204, 255, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(0, 204, 255, 0.8); }
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.8); }
+        }
+        
+        @media (max-width: 768px) {
+            .music-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .track-links {
+                flex-direction: row;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+
+            .cruise-btn-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .cruise-btn, .dashboard-btn, .cruise-vibe-btn {
+                width: 100%;
+                max-width: 300px;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation with Icons -->
+    <div class="top-nav">
+        <div class="logo">
+            <i class="fas fa-infinity logo-icon"></i>
+            <span>SYNC<span class="infinity"></span>VIBE</span>
+        </div>
+        
+        <div class="nav-icons">
+            <a href="#home" class="nav-icon" title="Home"><i class="fas fa-home"></i></a>
+            <a href="#music" class="nav-icon" title="Music"><i class="fas fa-music"></i></a>
+            <a href="#gallery" class="nav-icon" title="Gallery"><i class="fas fa-images"></i></a>
+            <a href="#contact" class="nav-icon" title="Contact"><i class="fas fa-envelope"></i></a>
+        </div>
+    </div>
+    
+    <!-- Main Navigation -->
+    <nav class="main-nav">
+        <a href="#home">Home</a>
+        <a href="#music">Music</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#contact">Contact</a>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>AmaGosts Entertaimente</h1>
+            <p>Artist: Ekse it'z Mtk, King Love</p>
+            <div class="soul-badge" id="dashboard-status">
+                <span class="normal-status">Entertaimente Music Since (To be confirmed)</span>
+                <span class="crash-warning">Visit Premium SYNC VIBE |If chrash, its→ Under Maintenance</span>
+              </div>
+              
+              <style>
+                .soul-badge {
+                  padding: 8px 15px;
+                  background: rgba(0,0,0,0.7);
+                  border-radius: 20px;
+                  color: white;
+                  font-size: 14px;
+                  display: inline-block;
+                  position: relative;
+                  overflow: hidden;
+                }
+                
+                .crash-warning {
+                  display: none;
+                  color: #fff;
+                  animation: 
+                    glow 2s ease-in-out infinite alternate,
+                    blink 3s ease-in-out infinite,
+                    vibrate 0.3s ease-in-out infinite;
+                  text-shadow: 0 0 5px #ff4d4d;
+                  padding: 2px 8px;
+                  border-radius: 10px;
+                  background: rgba(255, 77, 77, 0.2);
+                }
+              
+                @keyframes glow {
+                  from {
+                    text-shadow: 0 0 5px #ff4d4d, 0 0 10px #ff4d4d;
+                  }
+                  to {
+                    text-shadow: 0 0 10px #ff4d4d, 0 0 20px #ff4d4d, 0 0 30px #ff4d4d;
+                  }
+                }
+              
+                @keyframes blink {
+                  0%, 100% { opacity: 0.8; }
+                  50% { opacity: 0.3; }
+                }
+              
+                @keyframes vibrate {
+                  0%, 100% { transform: translateX(0); }
+                  20% { transform: translateX(-1px); }
+                  40% { transform: translateX(1px); }
+                  60% { transform: translateX(-0.5px); }
+                  80% { transform: translateX(0.5px); }
+                }
+              
+                .normal-status {
+                  display: inline;
+                }
+              </style>
+              
+              <script>
+              // Enhanced status control with smooth transitions
+              const statusNotifier = {
+                elements: {
+                  normal: document.querySelector('.normal-status'),
+                  warning: document.querySelector('.crash-warning')
+                },
+              
+                showNormal() {
+                  gsap.to(this.elements.warning, {
+                    opacity: 0,
+                    duration: 0.5,
+                    onComplete: () => {
+                      this.elements.warning.style.display = 'none';
+                      this.elements.normal.style.display = 'inline';
+                      gsap.to(this.elements.normal, { opacity: 1, duration: 0.5 });
+                    }
+                  });
+                },
+              
+                showCrashWarning() {
+                  this.elements.normal.style.display = 'none';
+                  this.elements.warning.style.display = 'inline';
+                  
+                  gsap.fromTo(this.elements.warning, 
+                    { opacity: 0, scale: 0.9 },
+                    { opacity: 1, scale: 1, duration: 0.8, ease: "elastic.out(1, 0.5)" }
+                  );
+              
+                  // Optional: Pulsing background effect
+                  setInterval(() => {
+                    gsap.to(this.elements.warning, {
+                      background: 'rgba(255, 77, 77, 0.4)',
+                      duration: 1.5,
+                      repeat: 1,
+                      yoyo: true
+                    });
+                  }, 3000);
+                },
+              
+                checkDashboard() {
+                  fetch('/music-dashboard/health-check')
+                    .then(response => {
+                      if (!response.ok) this.showCrashWarning();
+                      else this.showNormal();
+                    })
+                    .catch(() => this.showCrashWarning());
+                }
+              };
+              
+              // Include GSAP for smooth animations (add this to your head)
+              const gsapScript = document.createElement('script');
+              gsapScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js';
+              document.head.appendChild(gsapScript);
+              
+              // Initialize
+              document.addEventListener('DOMContentLoaded', () => {
+                statusNotifier.checkDashboard();
+                setInterval(() => statusNotifier.checkDashboard(), 120000);
+              });
+              </script>
+            
+            <div class="cruise-btn-container">
+                <button class="cruise-btn">
+                    <span class="cruise-icon">🎤</span>
+                    VIEW GIG EVENTS
+                </button>
+                <a href="https://3763f0c3-b7e6-464e-be51-6828d3de79e8-00-25ht57ngn6qug.worf.replit.dev/" class="dashboard-btn">
+                    <span class="cruise-icon"><i class="fas fa-music"></i></span>
+                   Visit PREMIUNM SYNC VIBE
+                </a>
+                <!-- Cruise Vibe Status Indicator -->
+<div id="cruise-vibe-status">
+    <a href="#" class="cruise-vibe-btn unavailable" id="cruiseVibeBtn">
+        <span class="cruise-icon"><i class="fas fa-anchor"></i></span>
+        <span class="status-text">CRUISE VIBE</span>
+        <span class="unavailable-notice">Not available at this moment. Visit us later. Thank you.</span>
+    </a>
+</div>
+
+<style>
+    /* Cruise Vibe Status Styles */
+    #cruise-vibe-status {
+        margin: 15px 0;
+        position: relative;
+    }
+    
+    .cruise-vibe-btn.unavailable {
+        position: relative;
+        background-color: #555;
+        cursor: not-allowed;
+        opacity: 0.8;
+        border: 1px solid #777;
+    }
+    
+    .cruise-vibe-btn.unavailable:hover {
+        background-color: #555;
+        transform: none;
+    }
+    
+    .unavailable-notice {
+        display: none;
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #333;
+        color: #ffcc00;
+        padding: 8px 12px;
+        border-radius: 5px;
+        white-space: nowrap;
+        font-size: 12px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        z-index: 100;
+    }
+    
+    .cruise-vibe-btn.unavailable:hover .unavailable-notice {
+        display: block;
+        animation: fadeIn 0.3s ease-out;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    .status-text:after {
+        content: " (Offline)";
+        color: #ff4d4d;
+        font-size: 0.8em;
+    }
+</style>
+
+<script>
+    // Optional: Add click prevention
+    document.getElementById('cruiseVibeBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        // Optional: Show a toast notification
+        alert("Cruise Vibe is currently unavailable. Please check back later.");
+    });
+</script>
+            </div>
+        </div>
+    </section>
+    
+    
+    <!-- Music Section -->
+    <section class="container" id="music">
+        <h2><span style="color: #ff3c00; font-weight: bold;">Our Music</span></h2>
+        <h3><span style="color: #f3cabef3; font-weight: bold;">AmaGosts Entertaiment Recent music💃</span></h3>
+        
+        <div class="music-grid" id="music-grid">
+            <!-- Music tracks will be inserted here by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="container" id="gallery">
+        <h2 style="color: #ff2f00;">Gallery</h2>
+        <h3><span style="color: #f3cabef3; font-weight: bold;">Moments from our musical journey</span></h3>
+        <div class="gallery-grid" id="gallery-grid">
+            <!-- Gallery items will be inserted here by JavaScript -->
+        </div>
+    </section>
+
+    <!-- CRUISE MODE OVERLAY -->
+    <div class="cruise-overlay" id="cruiseOverlay">
+        <div class="close-cruise">✕</div>
+        
+        <div class="cruise-content">
+            <!-- CURRENT GIG - SPECIAL FRAME -->
+            <div class="current-gig-frame">
+                <div class="glowing-border"></div>
+                <h2>✨ CURRENT GIG ✨</h2><p1><span style="color: #44c7e7; font-weight: bold;">Click Post for more Details</span></p1>
+                <div class="current-gig-image-container" id="current-gig-container">
+                    <!-- Current gig image will be inserted here -->
+                </div>
+                <button class="ticket-btn">GET TICKETS</button>
+            </div>
+      
+            <!-- PAST GIGS GALLERY -->
+            <div class="past-gigs-gallery">
+                <h2>PAST GIGS</h2><p1><span style="color: #44c7e7; font-weight: bold;">Click Post for more Details</span></p1>
+                <div class="gigs-gallery-grid" id="past-gigs-grid">
+                    <!-- Past gigs will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+  
+    <!-- FULLSCREEN VIEWER -->
+    <div class="fullscreen-viewer" id="fullscreenViewer">
+        <span class="close-fullscreen">✕</span>
+        <img id="fullscreenGigImage" class="fullscreen-gig-image">
+    </div>
+
+    <!-- Fullscreen Overlay -->
+    <div id="fullscreen-overlay">
+        <span class="close-btn">&times;</span>
+        <img id="fullscreen-image">
+    </div>
+    
+    <!-- Disclaimer -->
+    <div class="container">
+        <h3><span style="color: #ff7b00; font-weight: bold;">Disclaimer</span></h3>
+        <!-- Music Content Disclaimer -->
+<div class="disclaimer-container">
+    <h3><span class="disclaimer-heading">Music Collection Notice</span></h3>
+    <p><span class="highlight">AmaGosts Entertainment</span> now fully owns and operates this platform. While we primarily feature our original content, we've included select third-party tracks to enhance your listening experience.</p>
+</div>
+    
+    <!-- Contact Section -->
+    <section class="container" id="contact">
+        <h2><span style="color: #ff3c00; font-weight: bold;">Contact Us</span></h2>
+        <h4><span style="color: #fcc96b; font-weight: bold;">For bookings and collaborations</span></h4>
+        <div class="contact-info">
+            <p>Email: To be confirmed</p>
+            <p>Phone: (072 445 3729)</p>
+            <p>Web Developer: <span style="color: #f3d7b3ec; font-weight: bold;">Brandon(Tzb)</span>
+            <p>phnone: (076 815 4014)</p></p>
+        </div>
+    </section>
+    
+    <!-- Player Bar -->
+    <div class="player-bar">
+        <div class="now-playing">
+            <img src="" alt="Now Playing" class="now-playing-cover" id="now-playing-cover">
+            <div class="song-info">
+                <div class="title" id="now-playing-title">No song selected</div>
+                <div class="artist" id="now-playing-artist">AmaGosts</div>
+            </div>
+        </div>
+        
+        <div class="player-controls">
+            <div class="control-buttons">
+                <button class="control-button prev">
+                    <i class="fas fa-step-backward"></i>
+                </button>
+                <button class="control-button play-button-small" id="play-button">
+                    <i class="fas fa-play" id="play-icon"></i>
+                </button>
+                <button class="control-button next">
+                    <i class="fas fa-step-forward"></i>
+                </button>
+            </div>
+            
+            <div class="progress-container">
+                <span class="progress-time" id="current-time">0:00</span>
+                <div class="progress-bar" id="progress-bar">
+                    <div class="progress" id="progress"></div>
+                    <div class="progress-dot" id="progress-dot"></div>
+                </div>
+                <span class="progress-time" id="duration">0:00</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+        <div class="copyright">
+            &copy; 2025 AmaGosts Entertaiment. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Audio player functionality
+            const audio = new Audio();
+            let currentSongIndex = 0;
+            let isPlaying = false;
+            let songs = [];
+            let gigImages = [];
+            let isCruiseMode = false;
+            
+            // MANUAL CONTENT SETUP - REPLACE WITH YOUR ACTUAL FILES
+            function manualContentSetup() {
+                // Example music tracks - replace with your actual files
+                songs = [
+                    {
+                        title: "Woza Madala",
+                        artist: "AmaGhost_ENT.x Officixl Bright",
+                        audioUrl: "music/track1.mp3",
+                        image: "images/track1.jpg",
+                        duration: "End",
+                        youtube: "https://youtube.com",
+                        audiomack: "https://audiomack.com"
+                    },
+                    {
+                        title: "Trasa",
+                        artist: "Marsh Mellow & MTK",
+                        audioUrl: "music/track2.mp3",
+                        image: "images/track2.jpg",
+                        duration: "End",
+                        youtube: "https://youtube.com",
+                        audiomack: "https://audiomack.com"
+                    },
+                    {
+                        title: "Naledi-Wena Uyinkanyezi",
+                        artist: "Mawelele ft. Naledi Aphiwe",
+                        audioUrl: "music/track3.mp3",
+                        image: "images/track3.jpg",
+                        image: "images/track3.jpeg",
+                        duration: "End",
+                        youtube: "https://youtube.com",
+                        audiomack: "https://audiomack.com"
+                    },
+                    {
+                        title: "Sihlale Together",
+                        artist: "Naledi Aphiwe & Mawelele - Romeo & Juliet",
+                        audioUrl: "music/track4.mp3",
+                        image: "images/track4.jpg",
+                        image: "images/track4.jpeg",
+                        duration: "End",
+                        youtube: "https://youtube.com",
+                        audiomack: "https://audiomack.com"
+                    },
+                    {
+                        title: "Sondela Dali",
+                        artist: "Nkosazana Daughter & Harrycane",
+                        audioUrl: "music/track5.mp3",
+                        image: "images/track5.jpg",
+                        duration: "End",
+                        youtube: "https://youtube.com",
+                        audiomack: "https://audiomack.com"
+                    },
+                    {
+                        title: "MINA NAWE",
+                        artist: "Goon flavour , Master KG , Naledi Aphiwe",
+                        audioUrl: "music/track6.mp3",
+                        image: "images/track6.jpg",
+                        duration: "End",
+                        youtube: "https://youtube.com",
+                        audiomack: "https://audiomack.com"
+                    },
+                    {
+                        title: "Mjolo",
+                        artist: "Cici & JL SA",
+                        audioUrl: "music/track7.mp3",
+                        image: "images/track7.jpg",
+                        image: "images/track7.jpeg",
+                        duration: "End",
+                        youtube: "https://youtube.com",
+                        audiomack: "https://audiomack.com"
+                    },
+                    {
+                        title: "Dali Wami",
+                        artist: "King_Temoso_x_Master_KG_Nkosazana_Daughter_feat._Nobuhle",
+                        audioUrl: "music/track8.mp3",
+                        image: "images/track8.jpg",
+                        image: "images/track8.png",
+                        duration: "End",
+                        youtube: "https://youtube.com",
+                        audiomack: "https://audiomack.com"
+                    }
+                ].filter(song => {
+                    // Only include songs that have both audio and image files
+                    return song.audioUrl && song.image;
+                });
+
+                // Example gig images - replace with your actual files
+                // The highest number (gig5) will be the current gig
+                // gig0 is the default if no current gig exists
+                gigImages = [
+                    { 
+                        name: "images/gig5.jpg", 
+                        title: "Feel free to scroll down",
+                        date: "SEE PAST GIG",
+                        location: "",
+                        isCurrent: true
+                    },
+                    { 
+                        name: "images/gig4.jpg", 
+                        title: "Past",
+                        date: "",
+                        location: "",
+                        isCurrent: false
+                    },
+                    { 
+                        name: "images/gig3.jpg", 
+                        title: "Past",
+                        date: "",
+                        location: "",
+                        isCurrent: false
+                    },
+                    { 
+                        name: "images/gig2.jpg", 
+                        title: "Past",
+                        date: "",
+                        location: "",
+                        isCurrent: false
+                    },
+                    { 
+                        name: "images/gig1.jpg", 
+                        title: "Past",
+                        date: "",
+                        location: "",
+                        isCurrent: false
+                    },
+                    { 
+                        name: "images/gig.jpg", 
+                        title: "Past",
+                        date: "",
+                        location: "",
+                        isCurrent: false,
+                        isDefault: true
+                    }
+                ].filter(gig => gig.name); // Only include gigs with images
+
+                renderMusicTracks();
+                renderGalleryImages();
+                renderGigImages();
+            }
+
+            // Render music tracks to the DOM (shows exactly 8 slots)
+            function renderMusicTracks() {
+                const musicGrid = document.getElementById('music-grid');
+                if (!musicGrid) return;
+                
+                musicGrid.innerHTML = '';
+                
+                // Create exactly 8 slots
+                const totalSlots = 10;
+                
+                for (let i = 0; i < totalSlots; i++) {
+                    const trackElement = document.createElement('div');
+                    trackElement.className = 'track';
+                    
+                    if (i < songs.length) {
+                        // Render actual track if it exists
+                        const song = songs[i];
+                        trackElement.innerHTML = `
+                            <div class="track-image-container">
+                                <img src="${song.image}" alt="${song.title}" class="track-image">
+                                <div class="play-overlay">
+                                    <div class="play-icon">
+                                        <i class="fas fa-play"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <h3>${song.title}</h3>
+                            <p>${song.artist}</p>
+                            <div class="track-links">
+                                <a href="${song.youtube}" class="youtube-btn" target="_blank">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                                <a href="${song.audiomack}" class="audiomack-btn" target="_blank">
+                                    <i class="fas fa-music"></i>
+                                </a>
+                            </div>
+                        `;
+                        
+                        // Add click event to play the song
+                        trackElement.querySelector('.play-overlay').addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            playSong(i, true); // Pass true to auto-play
+                        });
+                    } else {
+                        // Render empty slot
+                        trackElement.innerHTML = `
+                            <div class="track-image-container">
+                                <div style="background-color: #333; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-music" style="font-size: 2rem; color: #555;"></i>
+                                </div>
+                            </div>
+                            <h3>Coming Soon</h3>
+                            <p>New Release</p>
+                            <div class="track-links">
+                                <a href="#" class="youtube-btn disabled" style="opacity: 0.5; pointer-events: none;">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                                <a href="#" class="audiomack-btn disabled" style="opacity: 0.5; pointer-events: none;">
+                                    <i class="fas fa-music"></i>
+                                </a>
+                            </div>
+                        `;
+                        trackElement.style.opacity = "0.7";
+                    }
+                    
+                    musicGrid.appendChild(trackElement);
+                }
+            }
+            
+            // Function to play a song (with optional autoplay parameter)
+            function playSong(index, autoplay = false) {
+                if (index < 0 || index >= songs.length) return;
+                
+                const song = songs[index];
+                currentSongIndex = index;
+                
+                audio.src = song.audioUrl;
+                
+                // Update player UI
+                const nowPlayingCover = document.getElementById('now-playing-cover');
+                if (nowPlayingCover) nowPlayingCover.src = song.image;
+                
+                const nowPlayingTitle = document.getElementById('now-playing-title');
+                if (nowPlayingTitle) nowPlayingTitle.textContent = song.title;
+                
+                const nowPlayingArtist = document.getElementById('now-playing-artist');
+                if (nowPlayingArtist) nowPlayingArtist.textContent = song.artist;
+                
+                const durationEl = document.getElementById('duration');
+                if (durationEl) durationEl.textContent = song.duration;
+
+                // Set up play promise for when user clicks play button
+                audio.onended = playNext;
+                
+                // Auto-play if requested
+                if (autoplay) {
+                    const playPromise = audio.play();
+                    
+                    if (playPromise !== undefined) {
+                        playPromise.then(_ => {
+                            isPlaying = true;
+                            const playIcon = document.getElementById('play-icon');
+                            if (playIcon) playIcon.classList.replace('fa-play', 'fa-pause');
+                            // Show progress dot when playing
+                            document.getElementById('progress-dot').style.display = 'block';
+                        })
+                        .catch(error => {
+                            console.log("Autoplay prevented - showing play button instead");
+                            // Show play button if autoplay fails
+                            isPlaying = false;
+                            const playIcon = document.getElementById('play-icon');
+                            if (playIcon) playIcon.classList.replace('fa-pause', 'fa-play');
+                            document.getElementById('progress-dot').style.display = 'none';
+                        });
+                    }
+                } else {
+                    // Just load the audio without playing
+                    audio.load();
+                    document.getElementById('progress-dot').style.display = 'none';
+                }
+            }
+
+            // Render gallery images to the DOM (shows only available images)
+            function renderGalleryImages() {
+                const galleryGrid = document.getElementById('gallery-grid');
+                if (!galleryGrid) return;
+                
+                galleryGrid.innerHTML = '';
+                
+                // Filter out gig images and only show track images
+                const trackImages = songs.map(song => ({
+                    name: song.image,
+                    title: song.title
+                }));
+                
+                trackImages.forEach(image => {
+                    const galleryItem = document.createElement('div');
+                    galleryItem.className = 'gallery-item';
+                    galleryItem.innerHTML = `
+                        <img src="${image.name}" alt="${image.title}" class="enlargeable-gallery" data-full="${image.name}">
+                    `;
+                    galleryGrid.appendChild(galleryItem);
+                });
+            }
+            
+            // Render gig images to the DOM with highest number as current gig
+            function renderGigImages() {
+                const currentGigContainer = document.getElementById('current-gig-container');
+                const pastGigsGrid = document.getElementById('past-gigs-grid');
+                
+                if (!currentGigContainer || !pastGigsGrid) return;
+                
+                // Clear existing content
+                currentGigContainer.innerHTML = '';
+                pastGigsGrid.innerHTML = '';
+                
+                // Find current gig (highest number or default)
+                let currentGig = gigImages.find(gig => gig.isCurrent);
+                
+                if (!currentGig) {
+                    currentGig = gigImages.find(gig => gig.isDefault);
+                    if (!currentGig && gigImages.length > 0) {
+                        currentGig = gigImages[0];
+                    }
+                }
+                
+                // Find past gigs (all except current)
+                let pastGigs = gigImages.filter(gig => gig !== currentGig);
+                
+                // Limit past gigs to 5
+                pastGigs = pastGigs.slice(0, 5);
+                
+                // Render current gig
+                if (currentGig) {
+                    currentGigContainer.innerHTML = `
+                        <div style="position: relative;">
+                            <img src="${currentGig.name}" class="current-gig-image enlargeable-gig" data-full="${currentGig.name}" style="width: 100%; border-radius: 10px;">
+                            <div style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.7); padding: 15px; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+                                <h3 style="margin: 0; font-size: 1.2rem;">${currentGig.title}</h3>
+                                <p style="margin: 5px 0 0; font-size: 0.9rem;">${currentGig.date}<br>${currentGig.location}</p>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    currentGigContainer.innerHTML = `
+                        <div style="background-color: #333; padding: 20px; border-radius: 10px; text-align: center;">
+                            <i class="fas fa-calendar-times" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                            <p>No upcoming gigs scheduled</p>
+                        </div>
+                    `;
+                }
+                
+                // Render past gigs
+                if (pastGigs.length === 0) {
+                    pastGigsGrid.innerHTML = `
+                        <div style="background-color: #222; padding: 20px; border-radius: 10px; text-align: center; grid-column: 1 / -1;">
+                            <i class="fas fa-images" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                            <p>No past gigs to display</p>
+                        </div>
+                    `;
+                } else {
+                    pastGigs.forEach(gig => {
+                        const gigFrame = document.createElement('div');
+                        gigFrame.className = 'gallery-frame';
+                        gigFrame.innerHTML = `
+                            <img src="${gig.name}" class="gallery-image enlargeable-gig" data-full="${gig.name}">
+                            <div style="margin-top: 10px;">
+                                <h3 style="margin: 0; font-size: 1rem;">${gig.title}</h3>
+                                <p style="margin: 5px 0 0; font-size: 0.8rem; color: #aaa;">${gig.date}</p>
+                            </div>
+                        `;
+                        pastGigsGrid.appendChild(gigFrame);
+                    });
+                }
+            }
+
+            // Function to format time (seconds to MM:SS)
+            function formatTime(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+            }
+
+            // Update progress bar and time
+            function updateProgress() {
+                if (audio.duration) {
+                    const progressPercent = (audio.currentTime / audio.duration) * 100;
+                    const progress = document.getElementById('progress');
+                    if (progress) progress.style.width = `${progressPercent}%`;
+                    
+                    // Position the progress dot
+                    const progressDot = document.getElementById('progress-dot');
+                    if (progressDot) {
+                        progressDot.style.left = `${progressPercent}%`;
+                    }
+                    
+                    const currentTimeEl = document.getElementById('current-time');
+                    if (currentTimeEl) currentTimeEl.textContent = formatTime(audio.currentTime);
+                }
+            }
+
+            // Set progress when clicked on progress bar
+            function setProgress(e) {
+                const progressBar = document.getElementById('progress-bar');
+                if (!progressBar) return;
+                
+                const width = progressBar.clientWidth;
+                const clickX = e.offsetX;
+                const duration = audio.duration;
+                audio.currentTime = (clickX / width) * duration;
+            }
+
+            // Toggle play/pause
+            function togglePlayPause() {
+                if (audio.paused) {
+                    audio.play().then(() => {
+                        isPlaying = true;
+                        const playIcon = document.getElementById('play-icon');
+                        if (playIcon) playIcon.classList.replace('fa-play', 'fa-pause');
+                        document.getElementById('progress-dot').style.display = 'block';
+                    }).catch(error => {
+                        console.error("Playback failed:", error);
+                    });
+                } else {
+                    audio.pause();
+                    isPlaying = false;
+                    const playIcon = document.getElementById('play-icon');
+                    if (playIcon) playIcon.classList.replace('fa-pause', 'fa-play');
+                    document.getElementById('progress-dot').style.display = 'none';
+                }
+            }
+
+            // Play next song
+            function playNext() {
+                const nextIndex = (currentSongIndex + 1) % songs.length;
+                playSong(nextIndex, isPlaying); // Maintain play state
+            }
+
+            // Play previous song
+            function playPrev() {
+                const prevIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+                playSong(prevIndex, isPlaying); // Maintain play state
+            }
+
+            // Initialize fullscreen functionality for both gallery and gig images
+            function initFullscreenViewers() {
+                // Gallery images fullscreen
+                document.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('enlargeable-gallery')) {
+                        const fullscreenImg = document.getElementById('fullscreen-image');
+                        const overlay = document.getElementById('fullscreen-overlay');
+                        if (fullscreenImg && overlay) {
+                            fullscreenImg.src = e.target.dataset.full;
+                            overlay.style.display = 'flex';
+                            document.body.style.overflow = 'hidden';
+                        }
+                    }
+                    
+                    // Gig images fullscreen
+                    if (e.target.classList.contains('enlargeable-gig')) {
+                        const fullscreenGigImg = document.getElementById('fullscreenGigImage');
+                        const viewer = document.getElementById('fullscreenViewer');
+                        if (fullscreenGigImg && viewer) {
+                            fullscreenGigImg.src = e.target.dataset.full;
+                            viewer.style.display = 'flex';
+                            document.body.style.overflow = 'hidden';
+                        }
+                    }
+                });
+                
+                // Close buttons for both viewers
+                const closeBtn = document.querySelector('.close-btn');
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', function() {
+                        document.getElementById('fullscreen-overlay').style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    });
+                }
+                
+                const closeFullscreen = document.querySelector('.close-fullscreen');
+                if (closeFullscreen) {
+                    closeFullscreen.addEventListener('click', function() {
+                        document.getElementById('fullscreenViewer').style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    });
+                }
+                
+                // Close when clicking outside image
+                const galleryOverlay = document.getElementById('fullscreen-overlay');
+                if (galleryOverlay) {
+                    galleryOverlay.addEventListener('click', function(e) {
+                        if (e.target === this) {
+                            this.style.display = 'none';
+                            document.body.style.overflow = 'auto';
+                        }
+                    });
+                }
+                
+                const gigViewer = document.getElementById('fullscreenViewer');
+                if (gigViewer) {
+                    gigViewer.addEventListener('click', function(e) {
+                        if (e.target === this) {
+                            this.style.display = 'none';
+                            document.body.style.overflow = 'auto';
+                        }
+                    });
+                }
+                
+                // Close with ESC key
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === "Escape") {
+                        document.getElementById('fullscreen-overlay').style.display = 'none';
+                        document.getElementById('fullscreenViewer').style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+            }
+
+            // Initialize cruise mode functionality
+            function initCruiseMode() {
+                const cruiseBtn = document.querySelector('.cruise-btn');
+                const cruiseOverlay = document.getElementById('cruiseOverlay');
+                const closeCruise = document.querySelector('.close-cruise');
+                
+                if (cruiseBtn && cruiseOverlay && closeCruise) {
+                    cruiseBtn.addEventListener('click', function() {
+                        cruiseOverlay.style.display = 'block';
+                        document.body.style.overflow = 'hidden';
+                    });
+                    
+                    closeCruise.addEventListener('click', function() {
+                        cruiseOverlay.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    });
+                }
+                
+                // Ticket button action
+                const ticketBtn = document.querySelector('.ticket-btn');
+                if (ticketBtn) {
+                    ticketBtn.addEventListener('click', function() {
+                        alert('Redirecting to ticket purchase...');
+                        // window.location.href = 'your-ticket-link.html';
+                    });
+                }
+            }
+
+            // Initialize dashboard button
+            function initDashboardButton() {
+                const dashboardBtn = document.querySelector('.dashboard-btn');
+                if (dashboardBtn) {
+                    dashboardBtn.addEventListener('click', function() {
+                        alert('Redirecting to music dashboard...');
+                        // window.location.href = 'music-dashboard.html';
+                    });
+                }
+            }
+
+            // Initialize cruise vibe button
+            function initCruiseVibeButton() {
+                const cruiseVibeBtn = document.getElementById('cruiseVibeBtn');
+                if (cruiseVibeBtn) {
+                    cruiseVibeBtn.addEventListener('click', function(e) {
+                        // Just let the link work normally since it's now an <a> tag
+                        // The glow effect is handled via CSS :active state
+                    });
+                }
+            }
+
+            // Initialize player controls
+            function initPlayerControls() {
+                const playButton = document.getElementById('play-button');
+                if (playButton) {
+                    playButton.addEventListener('click', togglePlayPause);
+                }
+                
+                const prevButton = document.querySelector('.control-button.prev');
+                if (prevButton) {
+                    prevButton.addEventListener('click', playPrev);
+                }
+                
+                const nextButton = document.querySelector('.control-button.next');
+                if (nextButton) {
+                    nextButton.addEventListener('click', playNext);
+                }
+
+                const progressBar = document.getElementById('progress-bar');
+                if (progressBar) {
+                    progressBar.addEventListener('click', setProgress);
+                }
+
+                audio.addEventListener('timeupdate', updateProgress);
+                audio.addEventListener('play', function() {
+                    document.getElementById('progress-dot').style.display = 'block';
+                });
+                audio.addEventListener('pause', function() {
+                    document.getElementById('progress-dot').style.display = 'none';
+                });
+            }
+
+            // Initialize everything
+            function init() {
+                manualContentSetup();
+                initFullscreenViewers();
+                initCruiseMode();
+                initDashboardButton();
+                initCruiseVibeButton();
+                initPlayerControls();
+            }
+
+            // Start the application
+            init();
+        });
+
+        // Global function for button animation
+        function animateButton(button) {
+            if (!button) return;
+            button.style.animation = 'none';
+            void button.offsetWidth;
+            button.style.animation = null;
+            
+            button.style.pointerEvents = 'none';
+            setTimeout(() => {
+                button.style.pointerEvents = 'auto';
+            }, 300);
+        }
+    </script>
+</body>
+</html>
