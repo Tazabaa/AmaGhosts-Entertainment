@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="google-site-verification" content="L5_iv8J-b3qgZ88hkCi0SrjpYutiAYzjC0XJM1ZQjeE" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SYNC VIBE</title>
@@ -16,6 +15,8 @@
             --text-primary: #FFFFFF;
             --text-secondary: #B3B3B3;
             --glow: 0 0 20px rgb(189, 0, 0);
+            --ai-primary: #ff3366;
+            --ai-secondary: #ff6699;
         }
         
         * {
@@ -36,6 +37,284 @@
             transition: all 0.5s ease;
         }
         
+        /* AI Assistant Styles */
+        .ai-assistant {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .ai-toggle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--ai-primary), var(--ai-secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 51, 102, 0.4);
+            border: none;
+            outline: none;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ai-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 51, 102, 0.6);
+        }
+        
+        .ai-toggle::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0.3),
+                rgba(255, 255, 255, 0)
+            );
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+        
+        .ai-toggle.pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .ai-chat-container {
+            width: 350px;
+            height: 500px;
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            display: none;
+            flex-direction: column;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .ai-chat-container.visible {
+            display: flex;
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .ai-header {
+            background: linear-gradient(135deg, var(--ai-primary), var(--ai-secondary));
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .ai-title {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+        }
+        
+        .ai-title i {
+            margin-right: 10px;
+        }
+        
+        .ai-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .ai-close:hover {
+            transform: rotate(90deg);
+        }
+        
+        .ai-chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .ai-message {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.4;
+            position: relative;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .ai-message.ai {
+            background-color: #333;
+            color: white;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .ai-message.user {
+            background-color: var(--ai-primary);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .ai-message.ai::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 0;
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+            border-right-color: #333;
+            border-left: 0;
+        }
+        
+        .ai-message.user::after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: 0;
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+            border-left-color: var(--ai-primary);
+            border-right: 0;
+        }
+        
+        .ai-typing {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            background-color: #333;
+            border-radius: 18px;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .ai-typing span {
+            height: 8px;
+            width: 8px;
+            background-color: white;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 2px;
+            animation: typing 1.5s infinite ease-in-out;
+        }
+        
+        .ai-typing span:nth-child(1) {
+            animation-delay: 0s;
+        }
+        
+        .ai-typing span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .ai-typing span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+        
+        .ai-input-container {
+            padding: 15px;
+            background-color: #333;
+            display: flex;
+            align-items: center;
+        }
+        
+        .ai-input {
+            flex: 1;
+            padding: 12px 15px;
+            border-radius: 25px;
+            border: none;
+            background-color: #444;
+            color: white;
+            outline: none;
+            font-size: 14px;
+        }
+        
+        .ai-send {
+            background: var(--ai-primary);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-left: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .ai-send:hover {
+            background: var(--ai-secondary);
+            transform: rotate(15deg);
+        }
+        
+        .ai-quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 0 15px 15px;
+            background-color: #333;
+        }
+        
+        .ai-quick-btn {
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .ai-quick-btn:hover {
+            background-color: var(--ai-primary);
+        }
+        
+        /* Existing styles remain unchanged */
         .top-nav {
             display: flex;
             justify-content: space-between;
@@ -518,8 +797,8 @@
             background: linear-gradient(135deg, #0066cc, #004080);
             color: white;
             border: none;
-            padding: 11.85px 23.7px; /* Reduced by 21% */
-            font-size: 14.22px; /* Reduced by 21% */
+            padding: 11.85px 23.7px;
+            font-size: 14.22px;
             border-radius: 30px;
             cursor: pointer;
             font-weight: bold;
@@ -527,15 +806,15 @@
             transition: all 0.3s;
             display: inline-flex;
             align-items: center;
-            gap: 7.9px; /* Reduced by 21% */
+            gap: 7.9px;
         }
 
         .dashboard-btn {
             background: linear-gradient(135deg, #ff5500, #cc4400);
             color: white;
             border: none;
-            padding: 11.85px 23.7px; /* Reduced by 21% */
-            font-size: 14.22px; /* Reduced by 21% */
+            padding: 11.85px 23.7px;
+            font-size: 14.22px;
             border-radius: 30px;
             cursor: pointer;
             font-weight: bold;
@@ -543,15 +822,15 @@
             transition: all 0.3s;
             display: inline-flex;
             align-items: center;
-            gap: 7.9px; /* Reduced by 21% */
+            gap: 7.9px;
         }
 
         .cruise-vibe-btn {
             background: linear-gradient(135deg, #ff0000, #cc0000);
             color: white;
             border: none;
-            padding: 11.85px 23.7px; /* Reduced by 21% */
-            font-size: 14.22px; /* Reduced by 21% */
+            padding: 11.85px 23.7px;
+            font-size: 14.22px;
             border-radius: 30px;
             cursor: pointer;
             font-weight: bold;
@@ -559,8 +838,29 @@
             transition: all 0.3s;
             display: inline-flex;
             align-items: center;
-            gap: 7.9px; /* Reduced by 21% */
+            gap: 7.9px;
             text-decoration: none;
+        }
+
+        .upload-content-btn {
+            background: linear-gradient(135deg, #00cc66, #008040);
+            color: white;
+            border: none;
+            padding: 11.85px 23.7px;
+            font-size: 14.22px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 204, 102, 0.4);
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 7.9px;
+        }
+
+        .upload-content-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 204, 102, 0.6);
         }
 
         .cruise-vibe-btn:active {
@@ -568,7 +868,7 @@
         }
         
         .cruise-icon {
-            font-size: 18.96px; /* Reduced by 21% */
+            font-size: 18.96px;
         }
         
         .cruise-overlay {
@@ -608,19 +908,18 @@
         }
         
         .current-gig-frame {
-    position: relative;
-    background: rgba(0, 68, 136, 0.493);
-    border-radius: 15px;
-    padding: 20px; /* Reduced from 30px */
-    margin-bottom: 30px; /* Reduced from 50px */
-    text-align: center;
-    overflow: hidden;
-    max-width: 600px; /* Added maximum width */
-    margin-left: auto; /* Center horizontally */
-    margin-right: auto; /* Center horizontally */
-    width: 90%; /* Responsive width */
-}
-        
+            position: relative;
+            background: rgba(0, 68, 136, 0.493);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+            overflow: hidden;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 90%;
+        }
         
         .glowing-border {
             position: absolute;
@@ -753,6 +1052,181 @@
             color: #00ccff;
             transform: scale(1.2);
         }
+
+        /* Upload Modal Styles */
+        .upload-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .upload-content {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .upload-content h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .upload-form-group {
+            margin-bottom: 20px;
+        }
+
+        .upload-form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .upload-form-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background-color: #333;
+            color: white;
+        }
+
+        .upload-form-group input[type="file"] {
+            padding: 5px;
+        }
+
+        .upload-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .upload-submit-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-submit-btn:hover {
+            background-color: #cc0000;
+        }
+
+        .upload-cancel-btn {
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-cancel-btn:hover {
+            background-color: #555;
+        }
+
+        /* Login Modal Styles */
+        .login-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-content {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .login-content h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .login-form-group {
+            margin-bottom: 20px;
+        }
+
+        .login-form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .login-form-group input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background-color: #333;
+            color: white;
+        }
+
+        .login-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .login-submit-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .login-submit-btn:hover {
+            background-color: #cc0000;
+        }
+
+        .login-cancel-btn {
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .login-cancel-btn:hover {
+            background-color: #555;
+        }
+
+        .error-message {
+            color: #ff5555;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
         
         @keyframes glow-pulse {
             0%, 100% { box-shadow: 0 0 20px rgba(0, 204, 255, 0.5); }
@@ -790,15 +1264,62 @@
                 align-items: center;
             }
 
-            .cruise-btn, .dashboard-btn, .cruise-vibe-btn {
+            .cruise-btn, .dashboard-btn, .cruise-vibe-btn, .upload-content-btn {
                 width: 100%;
                 max-width: 300px;
                 margin-bottom: 10px;
+            }
+            
+            /* AI Assistant mobile styles */
+            .ai-assistant {
+                bottom: 80px;
+                right: 10px;
+            }
+            
+            .ai-chat-container {
+                width: 90%;
+                height: 70vh;
+                right: 5%;
+                left: 5%;
+            }
+            
+            .ai-message {
+                max-width: 90%;
             }
         }
     </style>
 </head>
 <body>
+    <!-- AI Assistant -->
+    <div class="ai-assistant">
+        <div class="ai-chat-container" id="aiChatContainer">
+            <div class="ai-header">
+                <div class="ai-title">
+                    <i class="fas fa-robot"></i>
+                    Tazabaa Assistant
+                </div>
+                <button class="ai-close" id="aiCloseBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="ai-chat-messages" id="aiChatMessages">
+                <!-- Messages will be added here dynamically -->
+            </div>
+            <div class="ai-quick-actions" id="aiQuickActions">
+                <!-- Quick action buttons will be added here -->
+            </div>
+            <div class="ai-input-container">
+                <input type="text" class="ai-input" id="aiInput" placeholder="Ask Tazabaa anything...">
+                <button class="ai-send" id="aiSendBtn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+        <button class="ai-toggle pulse" id="aiToggleBtn">
+            <i class="fas fa-robot"></i>
+        </button>
+    </div>
+
     <!-- Top Navigation with Icons -->
     <div class="top-nav">
         <div class="logo">
@@ -825,11 +1346,11 @@
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="hero-content">
-            <h1>AmaGhosts Entertainment</h1>
+            <h1>AmaGhosts Entertainmente</h1>
             <p>Artist: Ekse it'z Mtk, King Love</p>
             <div class="soul-badge" id="dashboard-status">
-                <span class="normal-status">Entertainment Music Since (To be confirmed)</span>
-                <span class="crash-warning">Visit Premium SYNC VIBE /If crash →its Under Maintenance</span>
+                <span class="normal-status">Entertainmente Music Since (To be confirmed)</span>
+                <span class="crash-warning">Visit Premium SYNC VIBE |If chrash, its→ Under Maintenance</span>
               </div>
               
               <style>
@@ -893,51 +1414,25 @@
                 },
               
                 showNormal() {
-                  gsap.to(this.elements.warning, {
-                    opacity: 0,
-                    duration: 0.5,
-                    onComplete: () => {
-                      this.elements.warning.style.display = 'none';
-                      this.elements.normal.style.display = 'inline';
-                      gsap.to(this.elements.normal, { opacity: 1, duration: 0.5 });
-                    }
-                  });
+                  this.elements.warning.style.display = 'none';
+                  this.elements.normal.style.display = 'inline';
                 },
               
                 showCrashWarning() {
                   this.elements.normal.style.display = 'none';
                   this.elements.warning.style.display = 'inline';
-                  
-                  gsap.fromTo(this.elements.warning, 
-                    { opacity: 0, scale: 0.9 },
-                    { opacity: 1, scale: 1, duration: 0.8, ease: "elastic.out(1, 0.5)" }
-                  );
-              
-                  // Optional: Pulsing background effect
-                  setInterval(() => {
-                    gsap.to(this.elements.warning, {
-                      background: 'rgba(255, 77, 77, 0.4)',
-                      duration: 1.5,
-                      repeat: 1,
-                      yoyo: true
-                    });
-                  }, 3000);
                 },
               
                 checkDashboard() {
-                  fetch('/music-dashboard/health-check')
-                    .then(response => {
-                      if (!response.ok) this.showCrashWarning();
-                      else this.showNormal();
-                    })
-                    .catch(() => this.showCrashWarning());
+                  // Simulate check - in a real app you would fetch from your server
+                  const isOnline = Math.random() > 0.3; // 70% chance of being online
+                  if (!isOnline) {
+                    this.showCrashWarning();
+                  } else {
+                    this.showNormal();
+                  }
                 }
               };
-              
-              // Include GSAP for smooth animations (add this to your head)
-              const gsapScript = document.createElement('script');
-              gsapScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js';
-              document.head.appendChild(gsapScript);
               
               // Initialize
               document.addEventListener('DOMContentLoaded', () => {
@@ -963,6 +1458,12 @@
         <span class="unavailable-notice">Not available at this moment. Visit us later. Thank you.</span>
     </a>
 </div>
+
+<!-- Upload Content Button -->
+<button class="upload-content-btn" id="uploadContentBtn">
+    <span class="cruise-icon"><i class="fas fa-upload"></i></span>
+    UPLOAD CONTENT
+</button>
 
 <style>
     /* Cruise Vibe Status Styles */
@@ -1034,7 +1535,7 @@
     <!-- Music Section -->
     <section class="container" id="music">
         <h2><span style="color: #ff3c00; font-weight: bold;">Our Music</span></h2>
-        <h3><span style="color: #f3cabef3; font-weight: bold;">AmaGhosts Entertainment Recent music💃</span></h3>
+        <h3><span style="color: #f3cabef3; font-weight: bold;">AmaGhosts Entertainment Recent music💃</h3>
         
         <div class="music-grid" id="music-grid">
             <!-- Music tracks will be inserted here by JavaScript -->
@@ -1087,9 +1588,60 @@
         <img id="fullscreen-image">
     </div>
     
+    <!-- Upload Content Modal -->
+    <div class="upload-modal" id="uploadModal">
+        <div class="upload-content">
+            <h2>Upload New Content</h2>
+            <form id="uploadForm">
+                <div class="upload-form-group">
+                    <label for="songTitle">Song Title</label>
+                    <input type="text" id="songTitle" required>
+                </div>
+                <div class="upload-form-group">
+                    <label for="artistName">Artist Name</label>
+                    <input type="text" id="artistName" required>
+                </div>
+                <div class="upload-form-group">
+                    <label for="songFile">Music File (MP3)</label>
+                    <input type="file" id="songFile" accept=".mp3" required>
+                </div>
+                <div class="upload-form-group">
+                    <label for="coverImage">Cover Image</label>
+                    <input type="file" id="coverImage" accept="image/*" required>
+                </div>
+                <div class="upload-buttons">
+                    <button type="button" class="upload-cancel-btn" id="uploadCancelBtn">Cancel</button>
+                    <button type="submit" class="upload-submit-btn">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="login-modal" id="loginModal">
+        <div class="login-content">
+            <h2>Login to Upload Content</h2>
+            <form id="loginForm">
+                <div class="login-form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="login-form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <div class="error-message" id="loginError">Invalid username or password</div>
+                <div class="login-buttons">
+                    <button type="button" class="login-cancel-btn" id="loginCancelBtn">Cancel</button>
+                    <button type="submit" class="login-submit-btn">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
     <!-- Disclaimer -->
     <div class="container">
-        <h3><span style="color: #ff7b00; font-weight: bold;">Claimer</span></h3>
+        <h3><span style="color: #ff7b00; font-weight: bold;">Disclaimer</span></h3>
         <!-- Music Content Disclaimer -->
 <div class="disclaimer-container">
     <h3><span class="disclaimer-heading">Music Collection Notice</span></h3>
@@ -1108,7 +1660,6 @@
             <p>phone: (076 815 4014)</p></p>
         </div>
     </section>
-    
     <!-- Player Bar -->
     <div class="player-bar">
         <div class="now-playing">
@@ -1152,12 +1703,449 @@
             <a href="#"><i class="fab fa-youtube"></i></a>
         </div>
         <div class="copyright">
-            &copy; 2025 AmaGosts Entertaiment. All rights reserved.
+            &copy; 2025 AmaGhosts Entertainment. All rights reserved.
         </div>
     </footer>
 
     <script>
+        // AI Assistant Functionality
+        class TazabaaAssistant {
+            constructor() {
+                this.isOpen = false;
+                this.messages = [];
+                this.quickActions = [
+                    { text: "Play music", action: "playMusic" },
+                    { text: "View gallery", action: "viewGallery" },
+                    { text: "Upload content", action: "uploadContent" },
+                    { text: "Contact info", action: "contactInfo" },
+                    { text: "About website", action: "aboutWebsite" },
+                    { text: "Help", action: "showHelp" }
+                ];
+                
+                this.initElements();
+                this.setupEventListeners();
+                this.addWelcomeMessage();
+                this.renderQuickActions();
+            }
+            
+            initElements() {
+                this.toggleBtn = document.getElementById('aiToggleBtn');
+                this.chatContainer = document.getElementById('aiChatContainer');
+                this.chatMessages = document.getElementById('aiChatMessages');
+                this.closeBtn = document.getElementById('aiCloseBtn');
+                this.inputField = document.getElementById('aiInput');
+                this.sendBtn = document.getElementById('aiSendBtn');
+                this.quickActionsContainer = document.getElementById('aiQuickActions');
+            }
+            
+            setupEventListeners() {
+                this.toggleBtn.addEventListener('click', () => this.toggleChat());
+                this.closeBtn.addEventListener('click', () => this.closeChat());
+                this.sendBtn.addEventListener('click', () => this.sendMessage());
+                this.inputField.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') this.sendMessage();
+                });
+            }
+            
+            toggleChat() {
+                this.isOpen = !this.isOpen;
+                if (this.isOpen) {
+                    this.chatContainer.classList.add('visible');
+                    this.toggleBtn.classList.remove('pulse');
+                    this.inputField.focus();
+                } else {
+                    this.chatContainer.classList.remove('visible');
+                }
+            }
+            
+            closeChat() {
+                this.isOpen = false;
+                this.chatContainer.classList.remove('visible');
+            }
+            
+            addWelcomeMessage() {
+                const welcomeMessage = `
+                    Hi there! unjani 👋 I'm Tazabaa, your friendly AI assistant for SYNC VIBE. 
+                    I can help you navigate the website, play music, upload content, and more!
+                    Try asking me:
+                    - "How to play?"
+                    - "who are the artist?"
+                    - "How to upload ?"
+                    Or use the quick actions below to get started!
+                `;
+                this.addMessage('ai', welcomeMessage);
+            }
+            
+            renderQuickActions() {
+                this.quickActionsContainer.innerHTML = '';
+                this.quickActions.forEach(action => {
+                    const button = document.createElement('button');
+                    button.className = 'ai-quick-btn';
+                    button.textContent = action.text;
+                    button.addEventListener('click', () => this.handleQuickAction(action.action));
+                    this.quickActionsContainer.appendChild(button);
+                });
+            }
+            
+            handleQuickAction(action) {
+                this.addMessage('user', action.replace(/([A-Z])/g, ' $1').trim());
+                
+                switch(action) {
+                    case 'playMusic':
+                        this.addMessage('ai', 'You can play music by clicking on any track in the Music section. I can also help you find specific songs!');
+                        this.scrollToSection('music');
+                        break;
+                    case 'viewGallery':
+                        this.addMessage('ai', 'The Gallery section shows amazing moments from our musical journey. Check it out!');
+                        this.scrollToSection('gallery');
+                        break;
+                    case 'uploadContent':
+                        this.addMessage('ai', 'To upload content, you need permission from the web developer. Contact Brandon at 076 815 4014 or reach out to AmaGhosts ENT for the password.');
+                        document.getElementById('uploadContentBtn').click();
+                        break;
+                    case 'contactInfo':
+                        this.addMessage('ai', 'For bookings and collaborations:\nEmail: melusimkhatshwa606@gmail.com \nPhone: (072 445 3729)\nWeb Developer: Brandon (076 815 4014)');
+                        this.scrollToSection('contact');
+                        break;
+                    case 'aboutWebsite':
+                        this.addMessage('ai', 'SYNC VIBE is the official platform for AmaGosts Entertainment, featuring artists Ekse it\'z Mtk and King Love. We showcase music, gallery, and upcoming events.');
+                        break;
+                    case 'showHelp':
+                        this.addMessage('ai', 'Search with keywords only e.g., upload, gig No full sentences—just short & direct ,if you want help about this app, type "help".');
+                        break;
+                    default:
+                        this.addMessage('ai', 'I\'m not sure how to help with that. Try asking something else!, please press help button below.');
+                }
+            }
+            
+            sendMessage() {
+                const message = this.inputField.value.trim();
+                if (message) {
+                    this.addMessage('user', message);
+                    this.inputField.value = '';
+                    this.processUserMessage(message);
+                }
+            }
+            
+            processUserMessage(message) {
+                // Show typing indicator
+                const typingIndicator = document.createElement('div');
+                typingIndicator.className = 'ai-typing';
+                typingIndicator.innerHTML = '<span></span><span></span><span></span>';
+                this.chatMessages.appendChild(typingIndicator);
+                this.scrollToBottom();
+                
+                // Process after a short delay to simulate thinking
+                setTimeout(() => {
+                    this.chatMessages.removeChild(typingIndicator);
+                    this.generateResponse(message);
+                }, 1000 + Math.random() * 2000);
+            }
+            
+            generateResponse(message) {
+    message = message.toLowerCase();
+    console.log("User input:", message);
+    let response = '';
+    
+    // Original responses (unchanged)
+    if (message.includes('hello') || message.includes('hi') || message.includes('unjani')) {
+        response = ' 😊 How can I help you today?';
+    } 
+    else if (message.includes('play') || message.includes('music') || message.includes('song')) {
+        response = 'You can play any Amapiano track by clicking on it in the Music section.';
+        this.scrollToSection('music');
+    } 
+    // ... [keep all your original responses exactly as they were]
+    else if (message.includes('how to play') || message.includes('play music') || message.includes('song')) {
+        response = 'You can play any Amapiano track by clicking on it in the Music section. Would you like me to take you there?';
+        this.scrollToSection('music');
+    } 
+    else if (message.includes('gallery') || message.includes('photo') || message.includes('picture')) {
+        response = 'The Gallery section showcases our Amapiano musical journey. I can take you there if you want!';
+        this.scrollToSection('gallery');
+    } 
+    else if (message.includes('upload') || message.includes('add') || message.includes('content')) {
+        response = 'To upload content, you need special permission. Please contact the web developer Brandon at 076 815 4014 or reach out to AmaGhosts ENT for the password.';
+    } 
+    else if (message.includes('contact') || message.includes('email') || message.includes('phone')) {
+        response = 'For bookings and collaborations:\nEmail: To be confirmed\nPhone: (072 445 3729)\nWeb Developer: Brandon (076 815 4014)';
+        this.scrollToSection('contact');
+    } 
+    else if (message.includes('help') || message.includes('support')) {
+        response = 'I can help you with:\n- Playing Amapiano tracks\n- Viewing gallery\n- Uploading content (with permission)\n- Contact information\n- Website navigation\nWhat do you need help with?';
+    } 
+    else if (message.includes('about') || message.includes('website') || message.includes('sync vibe')) {
+        response = 'SYNC VIBE is the official platform owned by Brandon  for AmaGosts Entertainment  , featuring Amapiano artists Ekse it\'z Mtk and King Love. We showcase music, gallery, and events.';
+    } 
+    else if (message.includes('developer') || message.includes('brandon') || message.includes('tzb')) {
+        response = 'The web developer is Brandon (Tzb). You can contact him at 076 815 4014 for any website-related inquiries or content upload permissions.';
+    }
+    // Artist-related responses (Amapiano focused)
+    else if (message.includes('artist') || message.includes('artists') || message.includes('amaGhosts')) {
+        response = 'AmaGhosts Entertainment features top Amapiano artists like Ekse it\'z Mtk and King Love. They are specialists in the hottest Amapiano sounds.';
+    }
+    else if (message.includes('ekse') || message.includes('mtk')) {
+        response = 'Ekse it\'z Mtk is one of our lead Amapiano artists. His popular tracks include "Woza Madala" and "Trasa". You can find his music in the Music section!';
+        this.scrollToSection('music');
+    }
+    else if (message.includes('king love') || message.includes('kinglove')) {
+        response = 'King Love is a talented Amapiano artist collaborating with AmaGhosts Entertainment. Check out his Amapiano hits in our collection!';
+        this.scrollToSection('music');
+    }
+    else if (message.includes('genre') || message.includes('type of music')) {
+        response = 'We specialize exclusively in Amapiano - the hottest South African sound blending deep house, jazz and lounge music with African rhythms. Pure vibes!';
+    }
+    // Gig-related responses (updated for 2025)
+    else if (message.includes('gig') || message.includes('event') || message.includes('show') || message.includes('concert')) {
+        response = 'We currently don\'t have any upcoming gigs scheduled, but check back soon for announcements! You can still see our past events in the GIG EVENTS section.';
+    }
+    else if (message.includes('upcoming') || message.includes('next event')) {
+        response = 'As of 2025, we don\'t have any upcoming events announced yet. Follow us on social media to be the first to know when we schedule new Amapiano shows!';
+    }
+    else if (message.includes('ticket') || message.includes('buy ticket') || message.includes('get ticket')) {
+        response = 'There are no tickets available right now as we don\'t have any upcoming events in 2025. Check back later for new Amapiano shows!';
+    }
+    else if (message.includes('past event') || message.includes('previous gig') || message.includes('past gig')) {
+        response = 'We\'ve had amazing Amapiano events in the past like the Summer Festival and Spring Tour. Check out photos in the GIG EVENTS section!';
+    }
+    else if (message.includes('venue') || message.includes('location')) {
+        response = 'Our past Amapiano events happened at top venues across South Africa. When we schedule new events, the locations will be announced on our website and social media.';
+    }
+    // Music-related responses
+    else if (message.includes('latest') || message.includes('new release') || message.includes('new song')) {
+        response = 'Our latest Amapiano releases include "Woza Madala" and "Trasa". You can find all our newest tracks in the Music section!';
+        this.scrollToSection('music');
+    }
+    else if (message.includes('popular') || message.includes('best song') || message.includes('hit')) {
+        response = 'Our most popular Amapiano tracks are "Woza Madala" and "Naledi-Wena Uyinkanyezi" but is not from Amghosts Etn...production . These get the crowd moving every time!';
+    }
+    else if (message.includes('listen') || message.includes('where can i hear')) {
+        response = 'You can listen to all our Amapiano hits right here on SYNC VIBE! Just go to the Music section and click any track. We\'re also on YouTube and Audiomack.';
+        this.scrollToSection('music');
+    }
+    else if (message.includes('youtube') || message.includes('audiomack')) {
+        response = 'Yes! You can find our Amapiano music on both YouTube and Audiomack. Each track in our Music section has links to these platforms. Just click the icons below any song!';
+    }
+    // Website functionality
+    else if (message.includes('premium') || message.includes('vip')) {
+        response = 'Our PREMIUM SYNC VIBE offers exclusive Amapiano content and features. Click the "Visit PREMIUM SYNC VIBE" button to check it out!';
+    }
+    else if (message.includes('cruise vibe') || message.includes('cruise mode')) {
+        response = 'CRUISE VIBE is our special Amapiano feature currently in development. Stay tuned for updates in 2025!';
+    }
+    else if (message.includes('feature') || message.includes('what can i do')) {
+        response = 'On SYNC VIBE you can:\n- Stream our Amapiano collection\n- View event photos\n- Check past gigs\n- Learn about our artists\n- Contact us\nWhat would you like to do?';
+    }
+    else if (message.includes('problem') || message.includes('not working') || message.includes('issue')) {
+        response = 'Sorry to hear you\'re having trouble! For technical issues, please contact our web developer Brandon at 076 815 4014.';
+    }
+    else if (message.includes('social media') || message.includes('instagram') || message.includes('facebook')) {
+        response = 'Follow us on social media for the latest Amapiano updates! Check our footer for all the links.';
+    }
+    else if (message.includes('collaborate') || message.includes('work together')) {
+        response = 'We love Amapiano collaborations! For music projects or bookings, contact us at (072 445 3729) or through the contact section.';
+        this.scrollToSection('contact');
+    }
+   
+    // New additional responses in the same style:
+    else if (message.includes('hey') || message.includes('Tazabaa')) {
+        response = 'Just here to help with all things Sync Vibe! What do you need?';
+    }
+    else if (message.includes('how are you') || message.includes('how r u')) {
+        response = 'I\'m great, ready to help you with SYNC VIBE! What can I do for you?';
+    }
+    else if (message.includes('good morning') || message.includes('good afternoon') || message.includes('good evening')) {
+        response = 'Good vibes to you! How can I assist with SYNC VIBE today?';
+    }
+    else if (message.includes('tracks') || message.includes('songs list')) {
+        response = 'We have dope Amapiano tracks in our Music section. Want me to show you?';
+        this.scrollToSection('music');
+    }
+    else if (message.includes('latest song') || message.includes('newest track')) {
+        response = 'Our newest Amapiano drops are "Woza Madala" and "Trasa". Check them out in Music!';
+        this.scrollToSection('music');
+    }
+    else if (message.includes('hottest song') || message.includes('most popular')) {
+        response = 'Fans love "Woza Madala" and "Naledi-Wena Uyinkanyezi" the most right now!';
+    }
+    else if (message.includes('where to listen') || message.includes('how to play')) {
+        response = 'All our Amapiano tracks are right here in the Music section! Just click to play.';
+        this.scrollToSection('music');
+    }
+    else if (message.includes('youtube link') || message.includes('audiomack link')) {
+        response = 'Each track has YouTube and Audiomack links below it in the Music section!';
+    }
+    else if (message.includes('who made this') || message.includes('who created this')) {
+        response = 'This platform was developed by Brandon (Tzb). Contact him at 076 815 4014!';
+    }
+    else if (message.includes('need help') || message.includes('stuck')) {
+        response = 'No worries! I can help with music, gallery, or contacts. What do you need?';
+    }
+    else if (message.includes('what is this') || message.includes('whats this site')) {
+        response = 'This is SYNC VIBE - the official Amapiano platform for AmaGhosts Entertainment!';
+    }
+    else if (message.includes('when next event') || message.includes('next show date')) {
+        response = 'No upcoming events scheduled yet, but stay tuned for 2025 Amapiano shows!';
+    }
+    else if (message.includes('past shows') || message.includes('previous events')) {
+        response = 'Check our GIG EVENTS section for past Amapiano shows and memories!';
+    }
+    else if (message.includes('how to contact') || message.includes('get in touch')) {
+        response = 'Reach us at (072 445 3729) or through the Contact section!';
+        this.scrollToSection('contact');
+    }
+    else if (message.includes('upload music') || message.includes('add song')) {
+        response = 'To upload, contact Brandon at 076 815 4014 for permission first!';
+    }
+    else if (message.includes('who is ekse') || message.includes('about mtk')) {
+        response = 'Ekse it\'z Mtk is our lead Amapiano artist - check his tracks in Music!';
+        this.scrollToSection('music');
+    }
+    else if (message.includes('king love info') || message.includes('about kinglove')) {
+        response = 'King Love is our dope Amapiano artist - his music is in the Music section!';
+        this.scrollToSection('music');
+    }
+    else if (message.includes('what is amapiano') || message.includes('about genre')) {
+        response = 'Amapiano is the hottest South African sound - deep house meets African rhythms!';
+    }
+    else if (message.includes('thanks') || message.includes('thank you')|| message.includes('love')) {
+        response = 'You\'re welcome! Enjoy the Amapiano vibes!';
+    }
+    else if (message.includes('bye') || message.includes('goodbye') || message.includes('see you')) {
+        response = 'Later! Come back for more Amapiano!';
+    }
+    else if (message.includes('cool') || message.includes('awesome') || message.includes('nice')) {
+        response = 'Glad you like it! What else can I show you?';
+    }
+    else if (message.includes('social') || message.includes('instagram') || message.includes('facebook')) {
+        response = 'Find us on social media - links are in the footer!';
+    }
+    else if (message.includes('problem') || message.includes('not working')) {
+        response = 'Sorry about that! Contact Brandon at 076 815 4014 for help.';
+    }
+    else if (message.includes('premium') || message.includes('vip access')) {
+        response = 'Check out PREMIUM SYNC VIBE for exclusive Amapiano content!';
+    }
+    else if (message.includes('cruise vibe') || message.includes('special feature')) {
+        response = 'CRUISE VIBE is coming soon with new Amapiano features!';
+    }
+    else if (message.includes('collab') || message.includes('work together')) {
+        response = 'For collabs, contact us at (072 445 3729) or through the Contact section!';
+    }
+    else if (message.includes('photos') || message.includes('pictures')) {
+        response = 'Our gallery has all the Amapiano event photos - want to see?';
+        this.scrollToSection('gallery');
+    }
+    else if (message.includes('where music') || message.includes('find songs')) {
+        response = 'All our Amapiano tracks are in the Music section - I can take you there!';
+        this.scrollToSection('music');
+    }
+    else if (message.includes('who artist') || message.includes('about performers')) {
+        response = 'We feature Ekse it\'z Mtk and King Love - Amapiano specialists!';
+    }
+    else if (message.includes('upload') || message.includes('content')) {
+        response = 'Contact Brandon at 076 815 4014 for upload access details!';
+    }
+    else if (message.includes('contact number') || message.includes('phone number')) {
+        response = 'Reach us at (072 445 3729) or the developer at 076 815 4014!';
+    }
+    else if (message.includes('what can i do') || message.includes('site features')) {
+        response = 'You can play Amapiano tracks, view gallery, check events, and more!';
+    }
+    else if (message.includes('when new music') || message.includes('next release')) {
+        response = 'Stay tuned for new Amapiano drops coming soon in 2025!';
+    }
+    else if (message.includes('where events') || message.includes('gig location')) {
+        response = 'Past events were at top venues - no current new locations for 2025 shows!';
+    }
+    else if (message.includes('how to play') || message.includes('listen music')) {
+        response = 'Just click any track in the Music section to play our Amapiano hits!';
+        this.scrollToSection('music');
+    }
+    else if (message.includes('who made this') || message.includes('website developer')) {
+        response = 'Brandon (Tzb) developed this site - contact him at 076 815 4014!';
+    }
+    else if (message.includes('what is sync vibe') || message.includes('about platform')) {
+        response = 'SYNC VIBE is AmaGhosts\' official Amapiano music platform!';
+    }
+    else if (message.includes('how to join') || message.includes('be part')) {
+        response = 'For collaborations, contact us at (072 445 3729)!';
+    }
+    else if (message.includes('where from') || message.includes('based in')) {
+        response = 'We\'re a South African Amapiano platform showcasing local talent!';
+    }
+    else if (message.includes('what time') || message.includes('when open')) {
+        response = 'SYNC VIBE is available 24/7 for your Amapiano vibes!';
+    }
+    else if (message.includes('how many songs') || message.includes('track count')) {
+        response = 'We have a growing collection of Amapiano hits - check Music section!';
+        this.scrollToSection('music');
+    }
+    else if (message.includes('free music') || message.includes('no cost')) {
+        response = 'All our Amapiano tracks are free to play here on SYNC VIBE!';
+    }
+    else if (message.includes('artist name') || message.includes('artist names')) {
+        response = 'Our artists are Ekse it\'z Mtk and King Love - Amapiano specialists!';
+    }
+    else if (message.includes('other platforms') || message.includes('streaming')) {
+        response = 'We\'re also on YouTube and Audiomack - links are with each track!';
+    }
+    else if (message.includes('coming soon') || message.includes('new features')) {
+        response = 'CRUISE VIBE is coming soon with new Amapiano features in 2025!';
+    }
+    else if (message.includes('support') || message.includes('help me')) {
+        response = 'I can help with music, gallery, or contacts. What do you need?';
+    }
+    else if (message.includes('nothing') || message.includes('nevermind')) {
+        response = 'No problem! Come back if you need Amapiano help later!';
+    }
+    
+    else {
+        response = 'I\'m not sure I understand. Try asking about music, artists, or events! please press help button below.';
+    }
+    
+    this.addMessage('ai', response);
+
+}
+            
+            addMessage(sender, text) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `ai-message ${sender}`;
+                messageDiv.textContent = text;
+                this.chatMessages.appendChild(messageDiv);
+                this.scrollToBottom();
+                
+                // Add to messages history
+                this.messages.push({ sender, text });
+            }
+            
+            scrollToBottom() {
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+            }
+            
+            scrollToSection(sectionId) {
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+            
+            simulateTyping() {
+                this.toggleBtn.classList.add('pulse');
+            }
+        }
+
         document.addEventListener("DOMContentLoaded", function() {
+            // Initialize AI Assistant
+            const tazabaa = new TazabaaAssistant();
+            
+            // Simulate typing indicator after 5 seconds if chat isn't open
+            setTimeout(() => {
+                if (!tazabaa.isOpen) {
+                    tazabaa.simulateTyping();
+                }
+            }, 5000);
+
             // Audio player functionality
             const audio = new Audio();
             let currentSongIndex = 0;
@@ -1173,89 +2161,84 @@
                     {
                         title: "Woza Madala",
                         artist: "AmaGhost_ENT.x Officixl Bright",
-                        audioUrl: "track1.mp3",
+                        audioUrl: "music/track1.mp3",
                         image: "images/track1.jpg",
-                        duration: "End",
-                        youtube: "https://youtube.com/@amaghosts8581?si=OYvkpgObilQgWTUF",
-                        audiomack: "https://audiomack.com/perfectngwenyama/song/woza-mdala"
+                        duration: "3:45",
+                        youtube: "https://youtube.com",
+                        audiomack: "https://audiomack.com"
                     },
                     {
                         title: "Trasa",
                         artist: "Marsh Mellow & MTK",
-                        audioUrl: "track2.mp3",
+                        audioUrl: "music/track2.mp3",
                         image: "images/track2.jpg",
-                        duration: "End",
-                        youtube: "https://youtube.com/@amaghosts8581?si=OYvkpgObilQgWTUF",
-                        audiomack: "https://audiomack.com/search?q=amaghosts%20"
+                        duration: "4:12",
+                        youtube: "https://youtube.com",
+                        audiomack: "https://audiomack.com"
                     },
                     {
                         title: "Naledi-Wena Uyinkanyezi",
                         artist: "Mawelele ft. Naledi Aphiwe",
-                        audioUrl: "track3.mp3",
+                        audioUrl: "music/track3.mp3",
                         image: "images/track3.jpg",
                         image: "images/track3.jpeg",
-                        duration: "End",
-                        youtube: "https://www.youtube.com/watch?v=3auvr2QeOu0",
-                        audiomack: "https://audiomack.com/mawelele/song/naledi"
+                        duration: "3:58",
+                        youtube: "https://youtube.com",
+                        audiomack: "https://audiomack.com"
                     },
                     {
                         title: "Sihlale Together",
                         artist: "Naledi Aphiwe & Mawelele - Romeo & Juliet",
-                        audioUrl: "track4.mp3",
+                        audioUrl: "music/track4.mp3",
                         image: "images/track4.jpg",
                         image: "images/track4.jpeg",
-                        duration: "End",
-                        youtube: "https://www.youtube.com/watch?v=zV5bWCHrkj0",
-                        audiomack: "https://audiomack.com/naledi-aphiwe/song/romeo-juliet"
+                        duration: "4:25",
+                        youtube: "https://youtube.com",
+                        audiomack: "https://audiomack.com"
                     },
                     {
                         title: "Sondela Dali",
                         artist: "Nkosazana Daughter & Harrycane",
-                        audioUrl: "track5.mp3",
+                        audioUrl: "music/track5.mp3",
                         image: "images/track5.jpg",
-                        duration: "End",
-                        youtube: "sondela dali nkosazana daughter",
-                        audiomack: "https://audiomack.com/owamingcobo999/song/harrycane-nkosazana-daughter-sondela-dali-official-audio"
+                        duration: "3:30",
+                        youtube: "https://youtube.com",
+                        audiomack: "https://audiomack.com"
                     },
                     {
                         title: "MINA NAWE",
                         artist: "Goon flavour , Master KG , Naledi Aphiwe",
-                        audioUrl: "track6.mp3",
+                        audioUrl: "music/track6.mp3",
                         image: "images/track6.jpg",
-                        duration: "End",
-                        youtube: "https://www.youtube.com/watch?v=1DsZ3u1Agj0",
-                        audiomack: "https://audiomack.com/jaxmanmhlanga18/song/amapiano-mix-v3-dali-wami-fake-love-moyo-ungcwele-sondela-dali-happy"
+                        duration: "4:15",
+                        youtube: "https://youtube.com",
+                        audiomack: "https://audiomack.com"
                     },
                     {
                         title: "Mjolo",
                         artist: "Cici & JL SA",
-                        audioUrl: "track7.mp3",
+                        audioUrl: "music/track7.mp3",
                         image: "images/track7.jpg",
                         image: "images/track7.jpeg",
-                        duration: "End",
-                        youtube: "https://www.youtube.com/watch?v=lqv-MYzTCYI",
-                        audiomack: "https://audiomack.com/cici/song/mjolo"
+                        duration: "3:42",
+                        youtube: "https://youtube.com",
+                        audiomack: "https://audiomack.com"
                     },
                     {
                         title: "Dali Wami",
                         artist: "King_Temoso_x_Master_KG_Nkosazana_Daughter_feat._Nobuhle",
-                        audioUrl: "track8.mp3",
+                        audioUrl: "music/track8.mp3",
                         image: "images/track8.jpg",
                         image: "images/track8.png",
-                        duration: "End",
-                        youtube: "https://www.youtube.com/watch?v=Nn7oTrDmGro",
-                        audiomack: "https://audiomack.com/wanitwamos"
+                        duration: "4:08",
+                        youtube: "https://youtube.com",
+                        audiomack: "https://audiomack.com"
                     }
-                ].filter(song => {
-                    // Only include songs that have both audio and image files
-                    return song.audioUrl && song.image;
-                });
+                ];
 
                 // Example gig images - replace with your actual files
-                // The highest number (gig5) will be the current gig
-                // gig0 is the default if no current gig exists
                 gigImages = [
-                    { 
+                { 
                         name: "images/gig5.jpg", 
                         title: "Feel free to scroll down",
                         date: "SEE PAST GIG",
@@ -1290,88 +2273,53 @@
                         location: "",
                         isCurrent: false
                     },
-                    { 
-                        name: "images/gig.jpg", 
-                        title: "Past",
-                        date: "",
-                        location: "",
-                        isCurrent: false,
-                        isDefault: true
-                    }
-                ].filter(gig => gig.name); // Only include gigs with images
+                ];
 
                 renderMusicTracks();
                 renderGalleryImages();
                 renderGigImages();
             }
 
-            // Render music tracks to the DOM (shows exactly 8 slots)
+            // Render music tracks to the DOM
             function renderMusicTracks() {
                 const musicGrid = document.getElementById('music-grid');
                 if (!musicGrid) return;
                 
                 musicGrid.innerHTML = '';
                 
-                // Create exactly 8 slots
-                const totalSlots = 10;
-                
-                for (let i = 0; i < totalSlots; i++) {
+                songs.forEach((song, index) => {
                     const trackElement = document.createElement('div');
                     trackElement.className = 'track';
                     
-                    if (i < songs.length) {
-                        // Render actual track if it exists
-                        const song = songs[i];
-                        trackElement.innerHTML = `
-                            <div class="track-image-container">
-                                <img src="${song.image}" alt="${song.title}" class="track-image">
-                                <div class="play-overlay">
-                                    <div class="play-icon">
-                                        <i class="fas fa-play"></i>
-                                    </div>
+                    trackElement.innerHTML = `
+                        <div class="track-image-container">
+                            <img src="${song.image}" alt="${song.title}" class="track-image">
+                            <div class="play-overlay">
+                                <div class="play-icon">
+                                    <i class="fas fa-play"></i>
                                 </div>
                             </div>
-                            <h3>${song.title}</h3>
-                            <p>${song.artist}</p>
-                            <div class="track-links">
-                                <a href="${song.youtube}" class="youtube-btn" target="_blank">
-                                    <i class="fab fa-youtube"></i>
-                                </a>
-                                <a href="${song.audiomack}" class="audiomack-btn" target="_blank">
-                                    <i class="fas fa-music"></i>
-                                </a>
-                            </div>
-                        `;
-                        
-                        // Add click event to play the song
-                        trackElement.querySelector('.play-overlay').addEventListener('click', function(e) {
-                            e.stopPropagation();
-                            playSong(i, true); // Pass true to auto-play
-                        });
-                    } else {
-                        // Render empty slot
-                        trackElement.innerHTML = `
-                            <div class="track-image-container">
-                                <div style="background-color: #333; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-                                    <i class="fas fa-music" style="font-size: 2rem; color: #555;"></i>
-                                </div>
-                            </div>
-                            <h3>Coming Soon</h3>
-                            <p>New Release</p>
-                            <div class="track-links">
-                                <a href="#" class="youtube-btn disabled" style="opacity: 0.5; pointer-events: none;">
-                                    <i class="fab fa-youtube"></i>
-                                </a>
-                                <a href="#" class="audiomack-btn disabled" style="opacity: 0.5; pointer-events: none;">
-                                    <i class="fas fa-music"></i>
-                                </a>
-                            </div>
-                        `;
-                        trackElement.style.opacity = "0.7";
-                    }
+                        </div>
+                        <h3>${song.title}</h3>
+                        <p>${song.artist}</p>
+                        <div class="track-links">
+                            <a href="${song.youtube}" class="youtube-btn" target="_blank">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                            <a href="${song.audiomack}" class="audiomack-btn" target="_blank">
+                                <i class="fas fa-music"></i>
+                            </a>
+                        </div>
+                    `;
+                    
+                    // Add click event to play the song
+                    trackElement.querySelector('.play-overlay').addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        playSong(index, true); // Pass true to auto-play
+                    });
                     
                     musicGrid.appendChild(trackElement);
-                }
+                });
             }
             
             // Function to play a song (with optional autoplay parameter)
@@ -1427,30 +2375,25 @@
                 }
             }
 
-            // Render gallery images to the DOM (shows only available images)
+            // Render gallery images to the DOM
             function renderGalleryImages() {
                 const galleryGrid = document.getElementById('gallery-grid');
                 if (!galleryGrid) return;
                 
                 galleryGrid.innerHTML = '';
                 
-                // Filter out gig images and only show track images
-                const trackImages = songs.map(song => ({
-                    name: song.image,
-                    title: song.title
-                }));
-                
-                trackImages.forEach(image => {
+                // Use track images for gallery
+                songs.forEach(song => {
                     const galleryItem = document.createElement('div');
                     galleryItem.className = 'gallery-item';
                     galleryItem.innerHTML = `
-                        <img src="${image.name}" alt="${image.title}" class="enlargeable-gallery" data-full="${image.name}">
+                        <img src="${song.image}" alt="${song.title}" class="enlargeable-gallery" data-full="${song.image}">
                     `;
                     galleryGrid.appendChild(galleryItem);
                 });
             }
             
-            // Render gig images to the DOM with highest number as current gig
+            // Render gig images to the DOM
             function renderGigImages() {
                 const currentGigContainer = document.getElementById('current-gig-container');
                 const pastGigsGrid = document.getElementById('past-gigs-grid');
@@ -1461,21 +2404,11 @@
                 currentGigContainer.innerHTML = '';
                 pastGigsGrid.innerHTML = '';
                 
-                // Find current gig (highest number or default)
+                // Find current gig
                 let currentGig = gigImages.find(gig => gig.isCurrent);
                 
-                if (!currentGig) {
-                    currentGig = gigImages.find(gig => gig.isDefault);
-                    if (!currentGig && gigImages.length > 0) {
-                        currentGig = gigImages[0];
-                    }
-                }
-                
                 // Find past gigs (all except current)
-                let pastGigs = gigImages.filter(gig => gig !== currentGig);
-                
-                // Limit past gigs to 5
-                pastGigs = pastGigs.slice(0, 5);
+                let pastGigs = gigImages.filter(gig => !gig.isCurrent);
                 
                 // Render current gig
                 if (currentGig) {
@@ -1696,8 +2629,7 @@
                 const dashboardBtn = document.querySelector('.dashboard-btn');
                 if (dashboardBtn) {
                     dashboardBtn.addEventListener('click', function() {
-                        alert('Redirecting to music dashboard...');
-                        // window.location.href = 'music-dashboard.html';
+                        // This will open in a new tab since it's an anchor tag with href
                     });
                 }
             }
@@ -1707,10 +2639,131 @@
                 const cruiseVibeBtn = document.getElementById('cruiseVibeBtn');
                 if (cruiseVibeBtn) {
                     cruiseVibeBtn.addEventListener('click', function(e) {
-                        // Just let the link work normally since it's now an <a> tag
-                        // The glow effect is handled via CSS :active state
+                        e.preventDefault();
+                        alert("Cruise Vibe is currently unavailable. Please check back later.");
                     });
                 }
+            }
+
+            // Initialize upload content functionality
+            function initUploadContent() {
+                const uploadBtn = document.getElementById('uploadContentBtn');
+                const uploadModal = document.getElementById('uploadModal');
+                const uploadCancelBtn = document.getElementById('uploadCancelBtn');
+                const uploadForm = document.getElementById('uploadForm');
+                const loginModal = document.getElementById('loginModal');
+                const loginCancelBtn = document.getElementById('loginCancelBtn');
+                const loginForm = document.getElementById('loginForm');
+                const loginError = document.getElementById('loginError');
+
+                // Default credentials
+                const DEFAULT_USERNAME = "AmaGhost.mtk.King.Love";
+                const DEFAULT_PASSWORD = "Mtk@KingLove";
+
+                // Show login modal when upload button is clicked
+                uploadBtn.addEventListener('click', function() {
+                    loginModal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                });
+
+                // Close login modal
+                loginCancelBtn.addEventListener('click', function() {
+                    loginModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                });
+
+                // Handle login form submission
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const username = document.getElementById('username').value;
+                    const password = document.getElementById('password').value;
+                    
+                    if (username === DEFAULT_USERNAME && password === DEFAULT_PASSWORD) {
+                        // Successful login
+                        loginModal.style.display = 'none';
+                        uploadModal.style.display = 'flex';
+                        loginError.style.display = 'none';
+                    } else {
+                        // Failed login
+                        loginError.style.display = 'block';
+                    }
+                });
+
+                // Close upload modal
+                uploadCancelBtn.addEventListener('click', function() {
+                    uploadModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                });
+
+                // Handle upload form submission
+                uploadForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const songTitle = document.getElementById('songTitle').value;
+                    const artistName = document.getElementById('artistName').value;
+                    const songFile = document.getElementById('songFile').files[0];
+                    const coverImage = document.getElementById('coverImage').files[0];
+                    
+                    if (!songFile || !coverImage) {
+                        alert('Please select both a music file and a cover image');
+                        return;
+                    }
+                    
+                    // In a real application, you would upload the files to a server here
+                    // For this demo, we'll simulate the upload process
+                    
+                    // Create a URL for the uploaded files (in a real app, this would be the server response)
+                    const songUrl = URL.createObjectURL(songFile);
+                    const imageUrl = URL.createObjectURL(coverImage);
+                    
+                    // Create a new song object
+                    const newSong = {
+                        title: songTitle,
+                        artist: artistName,
+                        audioUrl: songUrl,
+                        image: imageUrl,
+                        duration: "0:00",
+                        youtube: "#",
+                        audiomack: "#"
+                    };
+                    
+                    // Add the new song to the songs array
+                    songs.unshift(newSong);
+                    
+                    // Re-render the music grid
+                    renderMusicTracks();
+                    renderGalleryImages();
+                    
+                    // Close the modal and reset the form
+                    uploadModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                    uploadForm.reset();
+                    
+                    // Show success message
+                    alert('Content uploaded successfully! It will appear in the music section.');
+                });
+
+                // Close modals when clicking outside
+                window.addEventListener('click', function(e) {
+                    if (e.target === uploadModal) {
+                        uploadModal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
+                    if (e.target === loginModal) {
+                        loginModal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+
+                // Close with ESC key
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === "Escape") {
+                        uploadModal.style.display = 'none';
+                        loginModal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
+                });
             }
 
             // Initialize player controls
@@ -1751,6 +2804,7 @@
                 initCruiseMode();
                 initDashboardButton();
                 initCruiseVibeButton();
+                initUploadContent();
                 initPlayerControls();
             }
 
